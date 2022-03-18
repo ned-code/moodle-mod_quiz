@@ -43,9 +43,8 @@ function xmldb_quizaccess_seb_upgrade($oldversion) {
     // Automatically generated Moodle v3.10.0 release upgrade line.
     // Put any upgrade step following this.
 
-    if ($oldversion < 2020110901) {
-        set_config('lockconfigafterattempt', 1, 'quizaccess_seb');
-    }
+    // Automatically generated Moodle v3.11.0 release upgrade line.
+    // Put any upgrade step following this.
 
     return true;
 }

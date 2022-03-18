@@ -1128,14 +1128,17 @@ function quiz_process_options($quiz) {
     $quiz->reviewoverallfeedback &= ~mod_quiz_display_options::DURING;
 
     // Ensure that disabled checkboxes in completion settings are set to 0.
-    if (empty($quiz->completionusegrade)) {
-        $quiz->completionpass = 0;
-    }
-    if (empty($quiz->completionpass)) {
-        $quiz->completionattemptsexhausted = 0;
-    }
-    if (empty($quiz->completionminattemptsenabled)) {
-        $quiz->completionminattempts = 0;
+    // But only if the completion settinsg are unlocked.
+    if (!empty($quiz->completionunlocked)) {
+        if (empty($quiz->completionusegrade)) {
+            $quiz->completionpass = 0;
+        }
+        if (empty($quiz->completionpass)) {
+            $quiz->completionattemptsexhausted = 0;
+        }
+        if (empty($quiz->completionminattemptsenabled)) {
+            $quiz->completionminattempts = 0;
+        }
     }
 }
 
@@ -1748,9 +1751,7 @@ function quiz_extend_settings_navigation($settings, $quiznode) {
         $quiznode->add_node($node, $beforekey);
     }
 
-    $tags = \core_tag_tag::get_item_tags_array('core', 'course_modules', $PAGE->cm->id); // CISSQ.
-    if (has_capability('mod/quiz:preview', $PAGE->cm->context)
-        && !(has_capability('local/ned_controller:preventquizpreviewsummative', $PAGE->cm->context) && !empty($tags) && in_array('Summative', $tags))) { // CISSQ.
+    if (has_capability('mod/quiz:preview', $PAGE->cm->context)) {
         $url = new moodle_url('/mod/quiz/startattempt.php',
                 array('cmid'=>$PAGE->cm->id, 'sesskey'=>sesskey()));
         $node = navigation_node::create(get_string('preview', 'quiz'), $url,

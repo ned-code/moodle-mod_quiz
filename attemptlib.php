@@ -276,9 +276,7 @@ class quiz {
      */
     public function is_preview_user() {
         if (is_null($this->ispreviewuser)) {
-            $tags = \core_tag_tag::get_item_tags_array('core', 'course_modules', $this->get_cmid());
-            $this->ispreviewuser = has_capability('mod/quiz:preview', $this->context)
-                && !(has_capability('local/ned_controller:preventquizpreviewsummative', $this->context) && !empty($tags) && in_array('Summative', $tags));
+            $this->ispreviewuser = has_capability('mod/quiz:preview', $this->context);
         }
         return $this->ispreviewuser;
     }
@@ -2688,8 +2686,12 @@ abstract class quiz_nav_panel_base {
     public function get_question_buttons() {
         $buttons = array();
         foreach ($this->attemptobj->get_slots() as $slot) {
-            if ($heading = $this->attemptobj->get_heading_before_slot($slot)) {
-                $buttons[] = new quiz_nav_section_heading(format_string($heading));
+            $heading = $this->attemptobj->get_heading_before_slot($slot);
+            if (!is_null($heading)) {
+                $sections = $this->attemptobj->get_quizobj()->get_sections();
+                if (!(empty($heading) && count($sections) == 1)) {
+                    $buttons[] = new quiz_nav_section_heading(format_string($heading));
+                }
             }
 
             $qa = $this->attemptobj->get_question_attempt($slot);
