@@ -8,17 +8,11 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - php: '7.5'
+          - php: '7.4'
             moodle-branch: 'master'
             database: 'pgsql'
-          - php: '7.4'
-            moodle-branch: 'MOODLE_311_STABLE'
-            database: 'mariadb'
           - php: '7.3'
-            moodle-branch: 'MOODLE_310_STABLE'
-            database: 'pgsql'
-          - php: '7.2'
-            moodle-branch: 'MOODLE_39_STABLE'
+            moodle-branch: 'MOODLE_311_STABLE'
             database: 'mariadb'
 
     services:
@@ -50,18 +44,11 @@ jobs:
         with:
           path: plugin
 
-      - name: Install node
-        uses: actions/setup-node@v1
-        with:
-          node-version: '14.15.0'
-
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
           extensions: mbstring, pgsql, mysqli
-#          tools: phpunit
-#          coverage: none
 
       - name: Deploy moodle-plugin-ci
         run: |

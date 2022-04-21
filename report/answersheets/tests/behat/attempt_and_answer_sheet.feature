@@ -22,8 +22,9 @@ Feature: Attempt sheet, Review sheet and Answer sheet feature of the Answer shee
       | contextlevel | reference | name           |
       | Course       | C1        | Test questions |
     And the following "activities" exist:
-      | activity   | name   | intro              | course | idnumber |
-      | quiz       | Quiz 1 | Quiz 1 description | C1     | quiz1    |
+      | activity | name   | intro              | course | idnumber |
+      | quiz     | Quiz 1 | Quiz 1 description | C1     | quiz1    |
+      | quiz     | Quiz 2 | Quiz 2 description | C1     | quiz2    |
     And the following "questions" exist:
       | questioncategory | qtype       | name | questiontext    | template    |
       | Test questions   | truefalse   | TF1  | First question  |             |
@@ -84,9 +85,7 @@ Feature: Attempt sheet, Review sheet and Answer sheet feature of the Answer shee
     And I should see "Three is odd."
     And I should see "Four is even."
     And user "student1" has finished an attempt at quiz "Quiz 1"
-    When I am on "Course 1" course homepage
-    And I follow "Quiz 1"
-    And I navigate to "Results > Export attempts" in current page administration
+    And I am on the "Quiz 1" "quiz_answersheets > Report" page logged in as "teacher"
     Then "Student One" row "Attempt sheets" column of "answersheets" table should contain "Review sheet"
     And "Student One" row "Answer sheets" column of "answersheets" table should contain "-"
     When I click on "Review sheet" "link" in the "Student One" "table_row"
@@ -95,3 +94,40 @@ Feature: Attempt sheet, Review sheet and Answer sheet feature of the Answer shee
     And I should see "Student One" in the "table.quizreviewsummary" "css_element"
     And I should see "Started on" in the "table.quizreviewsummary" "css_element"
     And I should see "State" in the "table.quizreviewsummary" "css_element"
+
+  @javascript
+  Scenario: Sheet's special message for un-submitted RecordRTC question type
+    Given I check the "recordrtc" question type already installed for export attempts report
+    And the following "questions" exist:
+      | questioncategory | qtype     | name | questiontext   | template |
+      | Test questions   | recordrtc | RTC1 | Third question | audio    |
+    And quiz "Quiz 2" contains the following questions:
+      | question | page |
+      | RTC1     | 1    |
+    And user "student1" has started an attempt at quiz "Quiz 2"
+    And I am on the "Quiz 2" "quiz_answersheets > Report" page logged in as "teacher"
+    When I click on "Attempt sheet" "link" in the "Student One" "table_row"
+    Then I should see "No recording"
+    And "No response recorded." "text" in the "Third question" "question" should not be visible
+
+  @javascript
+  Scenario: Sheet's special message for submitted RecordRTC question type
+    # We need to work around for this case because Moodle is creating response file for current logged in user.
+    Given I check the "recordrtc" question type already installed for export attempts report
+    And the following "questions" exist:
+      | questioncategory | qtype     | name | questiontext   | template |
+      | Test questions   | recordrtc | RTC1 | Third question | audio    |
+    And quiz "Quiz 2" contains the following questions:
+      | question | page |
+      | RTC1     | 1    |
+    And I am on the "quiz2" "Activity" page logged in as "student1"
+    And I click on "Attempt quiz" "button"
+    And "student1" has recorded "moodle-sharon.ogg" into the record RTC question
+    And I press "Finish attempt ..."
+    And I press "Submit all and finish"
+    And I click on "Submit all and finish" "button" in the "Confirmation" "dialogue"
+    And I log out
+    And I am on the "Quiz 2" "quiz_answersheets > Report" page logged in as "teacher"
+    When I click on "Review sheet" "link" in the "Student One" "table_row"
+    Then I should not see "No recording"
+    And "Response recorded: recorder1.ogg" "text" in the "Third question" "question" should not be visible

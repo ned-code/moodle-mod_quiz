@@ -53,8 +53,13 @@ $string['bulkinstructions'] = 'To be able to download review sheets in bulk, you
 6. Once the script has finished, you should have a file `{$a->scriptname}.zip` inside the `output` folder.
 7. Remember to delete the `{$a->scriptname}-steps.txt` file.
 
-Once you have the file downloaded, if you only want the files for one student, you can run a command like
+If you only want the files for one student, you can run a command like
 `.\save-answersheets --download-only \'X1234567\' \'{$a->scriptname}-steps.txt\'`
+
+If you only need the attachments, without the PDF of the review page, then add `--skip-pdfs` to the command. This is much faster.
+Example command: `.\save-answersheets --skip-pdfs \'{$a->scriptname}-steps.txt\'`.
+
+These two options can be combined, e.g. `.\save-answersheets --skip-pdfs --download-only \'X1234567\' \'{$a->scriptname}-steps.txt\'`.
 
 If you run any of these commands again, they will just download files which have not already been fetched. This can be helpful,
 for example if just a few additional students have attempted the quiz.';
@@ -81,6 +86,7 @@ $string['event_right_answer_printed'] = 'Quiz right answer sheet printed';
 $string['event_responses_submitted'] = 'Quiz responses submitted for user';
 $string['examcode'] = 'Confirmation code';
 $string['interactive_content_warning'] = 'Interactive content is not available in this format.';
+$string['no_response_recorded'] = 'No response recorded.';
 $string['page_type_attempt'] = 'Attempt sheet';
 $string['page_type_review'] = 'Review sheet';
 $string['page_type_answer'] = 'Answer sheet';
@@ -91,6 +97,7 @@ $string['print_header'] = '{$a->courseshortname} {$a->quizname} for {$a->student
 $string['print_header_minimised'] = '{$a->courseshortname} {$a->quizname} generated {$a->generatedtime} - {$a->sheettype}';
 $string['review_sheet_label'] = 'Review sheet';
 $string['review_sheet_title'] = '{$a->courseshortname} - {$a->quizname} - Review sheet';
+$string['response_recorded'] = 'Response recorded: {$a}.';
 $string['showquestioninstruction'] = 'Show default instruction text?';
 $string['showuserinfo'] = 'Identifying information to show about users';
 $string['submit_student_responses_label'] = 'Submit responses...';

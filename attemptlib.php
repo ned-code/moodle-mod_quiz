@@ -276,9 +276,7 @@ class quiz {
      */
     public function is_preview_user() {
         if (is_null($this->ispreviewuser)) {
-            $tags = \core_tag_tag::get_item_tags_array('core', 'course_modules', $this->get_cmid());
-            $this->ispreviewuser = has_capability('mod/quiz:preview', $this->context)
-                && !(has_capability('local/ned_controller:preventquizpreviewsummative', $this->context) && !empty($tags) && in_array('Summative', $tags));
+            $this->ispreviewuser = has_capability('mod/quiz:preview', $this->context);
         }
         return $this->ispreviewuser;
     }

@@ -109,10 +109,8 @@ class utils {
             }
 
             if ($field === 'examcode') {
-                require_once($CFG->dirroot . '/mod/quiz/report/gradingstudents/examconfirmationcode.php');
-
-                $value = \quiz_gradingstudents_report_exam_confirmation_code::get_confirmation_code(
-                        $reportoptions->cm->idnumber, $student->idnumber);
+                $value = \quiz_gradingstudents_ou_confirmation_code::get_confirmation_code(
+                        $reportoptions->cm, $student);
 
             } else {
                 $value = $student->$field;
@@ -203,8 +201,6 @@ class utils {
      * @return string User detail string
      */
     public static function get_user_details(stdClass $attemptuser, stdClass $cm, $fieldoptions): string {
-        global $CFG;
-
         $fields = [];
         if ($fieldoptions instanceof report_display_options) {
             foreach ($fieldoptions->userinfovisibility as $field => $show) {
@@ -228,10 +224,8 @@ class utils {
             }
 
             if ($field === 'examcode') {
-                require_once($CFG->dirroot . '/mod/quiz/report/gradingstudents/examconfirmationcode.php');
-
-                $data[] = \quiz_gradingstudents_report_exam_confirmation_code::get_confirmation_code(
-                        $cm->idnumber, $attemptuser->idnumber);
+                $data[] = \quiz_gradingstudents_ou_confirmation_code::get_confirmation_code(
+                        $cm, $attemptuser);
 
             } else if (!empty($attemptuser->$field)) {
                 $data[] = $attemptuser->$field;

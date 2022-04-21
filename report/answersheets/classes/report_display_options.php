@@ -158,19 +158,16 @@ class report_display_options extends \mod_quiz_attempts_report_options {
      * @return array setting name => true
      */
     public static function possible_user_info_visibility_settings(\stdClass $cm): array {
-        global $CFG;
-
         $settings = ['fullname' => true];
 
-        $userfields = get_extra_user_fields(context_module::instance($cm->id));
+        // TODO Does not support custom user profile fields (MDL-70456).
+        $userfields = \core_user\fields::get_identity_fields(context_module::instance($cm->id), false);
         foreach ($userfields as $field) {
             $settings[$field] = true;
         }
 
-        if (isset($settings['idnumber']) &&
-                is_readable($CFG->dirroot . '/mod/quiz/report/gradingstudents/examconfirmationcode.php')) {
-            require_once($CFG->dirroot . '/mod/quiz/report/gradingstudents/examconfirmationcode.php');
-            if (\quiz_gradingstudents_report_exam_confirmation_code::quiz_can_have_confirmation_code($cm->idnumber)) {
+        if (isset($settings['idnumber']) && class_exists('\quiz_gradingstudents_ou_confirmation_code')) {
+            if (\quiz_gradingstudents_ou_confirmation_code::quiz_can_have_confirmation_code($cm->idnumber)) {
                 $settings['examcode'] = true;
             }
         }
@@ -191,7 +188,7 @@ class report_display_options extends \mod_quiz_attempts_report_options {
             case 'fullname';
                 return get_string('fullnameuser');
             default:
-                return get_user_field_name($setting);
+                return \core_user\fields::get_display_name($setting);
         }
     }
 }
