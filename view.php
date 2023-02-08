@@ -238,12 +238,12 @@ if (!$viewobj->quizhasquestions) {
     }
 }
 
-// CISSQ -begin-
+// GHS -begin-
 $tags = \core_tag_tag::get_item_tags_array('core', 'course_modules', $cm->id);
 if (!is_siteadmin() && has_capability('local/ned_controller:preventquizpreviewsummative', $context, null, false) && !empty($tags) && in_array('Summative', $tags)) {
     $viewobj->buttontext = '';
 }
-// CISSQ -end-
+// GHS -end-
 
 $viewobj->showbacktocourse = ($viewobj->buttontext === '' &&
         course_get_format($course)->has_view_page());

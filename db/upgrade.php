@@ -66,5 +66,30 @@ function xmldb_quiz_upgrade($oldversion) {
     // Automatically generated Moodle v3.11.0 release upgrade line.
     // Put any upgrade step following this.
 
+    // GHS.
+    if ($oldversion < 2021051700.01) {
+
+        $table = new xmldb_table('quiz');
+
+        // Define field randompairquestion to be added to quiz.
+        $field = new xmldb_field('randompairquestion', XMLDB_TYPE_INTEGER, '4', null, XMLDB_NOTNULL, null, '0', 'allowofflineattempts');
+
+        // Conditionally launch add field randompairquestion.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Define field randomexcludetrailingletters to be added to quiz.
+        $field = new xmldb_field('randomexcludetrailingletters', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null, 'randompairquestion');
+
+        // Conditionally launch add field randomexcludetrailingletters.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Quiz savepoint reached.
+        upgrade_mod_savepoint(true, 2021051700.01, 'quiz');
+    }
+
     return true;
 }

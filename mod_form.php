@@ -223,9 +223,9 @@ class mod_quiz_mod_form extends moodleform_mod {
                 'neq', 'wontmatch');
         $mform->disabledIf('overallfeedbackduring', 'preferredbehaviour',
                 'neq', 'wontmatch');
-        
+
         /*
-         * This options can be necessary for overrides, even if timeclose option is off
+         * GHS - This options can be necessary for overrides, even if timeclose option is off
          * see MDL-62760
          */
         /*
@@ -358,6 +358,17 @@ class mod_quiz_mod_form extends moodleform_mod {
             $mform->disabledIf('feedbackboundaries[' . $i . ']', 'grade', 'eq', 0);
             $mform->disabledIf('feedbacktext[' . ($i + 1) . ']', 'grade', 'eq', 0);
         }
+
+        // GHS -begin-
+        $mform->addElement('header', 'raramdomheader', get_string('raramdomheader', 'quiz'));
+
+        $mform->addElement('selectyesno', 'randompairquestion', get_string('randompairquestion', 'quiz'));
+        $mform->addHelpButton('randompairquestion', 'randompairquestion', 'quiz');
+
+        $mform->addElement('text', 'randomexcludetrailingletters', get_string('randomexcludetrailingletters', 'quiz'));
+        $mform->setType('randomexcludetrailingletters', PARAM_TEXT);
+        $mform->addHelpButton('randomexcludetrailingletters', 'randomexcludetrailingletters', 'quiz');
+        // GHS -end-
 
         // -------------------------------------------------------------------------------
         $this->standard_coursemodule_elements();

@@ -1027,3 +1027,11 @@ $string['settingsoverrides'] = 'Settings overrides';
 
 // Deprecated since Moodle 3.11.
 $string['completionattemptsexhausteddesc'] = 'Complete if all available attempts are exhausted';
+
+// GHS.
+$string['raramdomheader'] = 'Question targeting for groupings';
+$string['randompairquestion'] = 'Pair last letter in question name with last letter in grouping name';
+$string['randompairquestion_help'] = '(example: Question 1B >< Grouping B) This option will turn the question pairing feature on or off for each quiz activity.';
+$string['randomexcludetrailingletters'] = 'Do not use question with this trailing letter if there is no matching grouping name';
+$string['randomexcludetrailingletters_help'] = 'This option will make the question unavailable if the question name ends with the specified letter AND there is no grouping with a matching letter in grouping name.';
+

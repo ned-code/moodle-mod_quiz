@@ -1751,9 +1751,9 @@ function quiz_extend_settings_navigation($settings, $quiznode) {
         $quiznode->add_node($node, $beforekey);
     }
 
-    $tags = \core_tag_tag::get_item_tags_array('core', 'course_modules', $PAGE->cm->id); // CISSQ.
+    $tags = \core_tag_tag::get_item_tags_array('core', 'course_modules', $PAGE->cm->id); // GHS.
     if (has_capability('mod/quiz:preview', $PAGE->cm->context)
-        && !(has_capability('local/ned_controller:preventquizpreviewsummative', $PAGE->cm->context) && !empty($tags) && in_array('Summative', $tags))) { // CISSQ.
+        && !(has_capability('local/ned_controller:preventquizpreviewsummative', $PAGE->cm->context) && !empty($tags) && in_array('Summative', $tags))) { // GHS.
         $url = new moodle_url('/mod/quiz/startattempt.php',
                 array('cmid'=>$PAGE->cm->id, 'sesskey'=>sesskey()));
         $node = navigation_node::create(get_string('preview', 'quiz'), $url,
