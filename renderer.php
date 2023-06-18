@@ -1008,15 +1008,11 @@ class mod_quiz_renderer extends plugin_renderer_base {
         }
         // NED -begin-
         $finalactivitywarning = '';
-        $tt_config = NED::get_site_and_course_block_config($quiz->course, NED::TT_NAME);
-        if (!empty($tt_config->fe_coursecompletion)
-            && !empty($tt_config->fe_tags)
-            && $tags = NED::get_tags_by_cm($cm)) {
-            if (!empty(array_intersect($tags, $tt_config->fe_tags))) {
-                $finalactivitywarning = \html_writer::div(
-                        NED::str('finalactivitywarning', null, 'block_' . NED::TT_NAME), 'alert alert-danger alert-red assign-finalactivitywarning'
-                );
-            }
+        $final_cmids = NED::get_final_cmids($quiz->course);
+        if (!empty($final_cmids && in_array($cm->id, $final_cmids))) {
+            $finalactivitywarning = \html_writer::div(
+                    NED::str('finalactivitywarning', null, 'block_' . NED::TT_NAME), 'alert alert-danger alert-red assign-finalactivitywarning'
+            );
         }
         // NED -end-
 
