@@ -23,8 +23,6 @@
  */
 
 
-use theme_ned_clean\shared_lib as NED;
-
 defined('MOODLE_INTERNAL') || die();
 
 
@@ -1006,21 +1004,8 @@ class mod_quiz_renderer extends plugin_renderer_base {
         if (html_is_blank($quiz->intro)) {
             return '';
         }
-        // NED -begin-
-        $finalactivitywarning = '';
-        $tt_config = NED::get_site_and_course_block_config($quiz->course, NED::TT_NAME);
-        if (!empty($tt_config->fe_coursecompletion)
-            && !empty($tt_config->fe_tags)
-            && $tags = NED::get_tags_by_cm($cm)) {
-            if (!empty(array_intersect($tags, $tt_config->fe_tags))) {
-                $finalactivitywarning = \html_writer::div(
-                        NED::str('finalactivitywarning', null, 'block_' . NED::TT_NAME), 'alert alert-danger alert-red assign-finalactivitywarning'
-                );
-            }
-        }
-        // NED -end-
 
-        return $this->box($finalactivitywarning . format_module_intro('quiz', $quiz, $cm->id), 'generalbox', 'intro'); // NED
+        return $this->box(format_module_intro('quiz', $quiz, $cm->id), 'generalbox', 'intro');
     }
 
     /**
